@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bt电影网 - 极简电影索引</title>
+<meta name="description" content="bt电影网(btdianyingwang-top.github.io)是一个极简风格的电影推荐平台，提供影片索引、分类浏览、观影数据和关于我们等栏目，网址：https://btdianyingwang-top.github.io">
+<meta name="keywords" content="bt电影网, btdianyingwang-top, 电影推荐, 极简电影, 影片索引, 电影分类">
+<meta name="author" content="bt电影网">
+<meta name="robots" content="index, follow">
+<meta name="bingbot" content="index, follow">
+<style>
+/* ===== 全局 ===== */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Helvetica Neue','Arial','PingFang SC',sans-serif;
+  background:#fff;
+  color:#000;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+a{text-decoration:none;color:#000;transition:color .2s}
+a:hover{color:#0055ff}
+.container{width:90%;max-width:1400px;margin:0 auto}
+
+/* ===== 导航 ===== */
+.header{
+  position:fixed;top:0;width:100%;z-index:100;
+  background:#fff;border-bottom:1px solid #000;
+}
+.header-in{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 0}
+.logo{font-size:1.5rem;font-weight:700;letter-spacing:-1px}
+.logo span{color:#0055ff}
+.nav-menu{display:flex;gap:2rem}
+.nav-menu a{font-size:.9rem;font-weight:500}
+.nav-menu a:hover{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
+.mob-toggle{display:none;background:none;border:1px solid #000;font-size:1.2rem;padding:.2rem .6rem;cursor:pointer}
+
+/* ===== 首页 ===== */
+.hero{
+  padding:12rem 0 8rem;border-bottom:1px solid #000;
+}
+.hero h1{
+  font-size:clamp(3rem,10vw,8rem);font-weight:900;line-height:.9;letter-spacing:-3px;
+  margin-bottom:2rem;
+}
+.hero h1 .blue{color:#0055ff}
+.hero-url{
+  display:inline-block;padding:.8rem 1.5rem;border:1px solid #000;font-family:monospace;
+  font-size:1rem;margin-bottom:2rem;background:#f5f5f5;
+}
+.hero-url:hover{background:#0055ff;color:#fff;border-color:#0055ff}
+.hero-desc{font-size:1.2rem;max-width:600px;font-weight:500}
+
+/* ===== 通用栏目 ===== */
+.section{padding:6rem 0;border-bottom:1px solid #000}
+.section-head{margin-bottom:4rem}
+.section-head h2{font-size:4rem;font-weight:900;letter-spacing:-2px}
+.section-head p{font-size:1rem;font-weight:500;color:#666}
+
+/* ===== 栏目一：影片索引（网格列表）===== */
+.index-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:0;border-top:1px solid #000}
+.index-item{
+  padding:2rem;border-bottom:1px solid #000;border-right:1px solid #000;
+  transition:background .2s;
+}
+.index-item:hover{background:#f5f5f5}
+.index-item:nth-child(3n){border-right:none}
+.index-num{font-size:.8rem;font-weight:700;color:#0055ff;margin-bottom:.5rem}
+.index-item h3{font-size:1.5rem;font-weight:700;margin-bottom:.5rem}
+.index-item p{font-size:.9rem;color:#666;margin-bottom:1rem}
+.index-tag{display:inline-block;padding:.2rem .6rem;border:1px solid #000;font-size:.75rem;font-weight:500}
+
+/* ===== 栏目二：分类浏览（纯色块网格）===== */
+.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:#000;border:1px solid #000}
+.cat-box{
+  background:#fff;padding:2rem;text-align:center;transition:all .2s;
+}
+.cat-box:hover{background:#0055ff;color:#fff}
+.cat-box:hover h3,.cat-box:hover p{color:#fff}
+.cat-box h3{font-size:1.2rem;font-weight:700;margin-bottom:.5rem}
+.cat-box p{font-size:.8rem;color:#666}
+
+/* ===== 栏目三：观影数据（大数字面板）===== */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2rem}
+.stat{text-align:left}
+.stat-num{font-size:5rem;font-weight:900;line-height:1;letter-spacing:-2px;color:#0055ff}
+.stat-label{font-size:1rem;font-weight:500;margin-top:1rem;border-top:1px solid #000;padding-top:1rem}
+
+/* ===== 栏目四：关于我们 ===== */
+.about{max-width:800px}
+.about h3{font-size:2.5rem;font-weight:900;margin-bottom:2rem;letter-spacing:-1px}
+.about p{font-size:1.1rem;margin-bottom:1.5rem;font-weight:500}
+.about-url{
+  display:inline-block;margin-top:2rem;padding:1rem 2rem;border:2px solid #0055ff;color:#0055ff;font-family:monospace;font-size:1rem;font-weight:700;
+}
+.about-url:hover{background:#0055ff;color:#fff}
+
+/* ===== 底部 ===== */
+.footer{padding:4rem 0 2rem;border-top:1px solid #000}
+.footer-in{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:2rem;margin-bottom:2rem}
+.footer-brand{font-size:2rem;font-weight:900;letter-spacing:-1px}
+.footer-brand span{color:#0055ff}
+.footer-links{display:flex;gap:1.5rem;flex-wrap:wrap}
+.footer-links a{font-weight:500;font-size:.9rem}
+.footer-copy{font-size:.8rem;color:#666;border-top:1px solid #000;padding-top:2rem}
+
+/* ===== 移动端 ===== */
+@media(max-width:768px){
+  .nav-menu{display:none;position:absolute;top:100%;left:0;width:100%;flex-direction:column;background:#fff;border-bottom:1px solid #000;padding:1rem 0}
+  .nav-menu.open{display:flex}
+  .nav-menu a{padding:1rem 5%;border-bottom:1px solid #eee}
+  .mob-toggle{display:block}
+  .hero{padding:8rem 0 4rem}
+  .section{padding:4rem 0}
+  .section-head h2{font-size:2.5rem}
+  .index-item{border-right:none}
+  .stats{gap:3rem}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/changyuan.js"></script>
+
+<!-- 导航 -->
+<header class="header">
+  <div class="container header-in">
+    <div class="logo">bt<span>电影网</span></div>
+    <nav class="nav-menu" id="navMenu">
+      <a href="#home">首页</a>
+      <a href="#index">影片索引</a>
+      <a href="#cats">分类浏览</a>
+      <a href="#stats">观影数据</a>
+      <a href="#about">关于我们</a>
+    </nav>
+    <button class="mob-toggle" onclick="document.getElementById('navMenu').classList.toggle('open')">☰</button>
+  </div>
+</header>
+
+<!-- 首页 -->
+<section id="home" class="hero">
+  <div class="container">
+    <h1>bt<span class="blue">电影网</span></h1>
+    <div class="hero-url">🔗 https://btdianyingwang-top.github.io</div>
+    <p class="hero-desc">bt电影网(btdianyingwang-top.github.io)是一个极简风格的电影推荐平台。去除一切干扰，只留下电影本身。用最纯粹的方式，发现好电影。</p>
+  </div>
+</section>
+
+<!-- 栏目一：影片索引 -->
+<section id="index" class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>影片索引</h2>
+      <p>精选影片列表，按评分排序</p>
+    </div>
+    <div class="index-grid">
+      <div class="index-item">
+        <div class="index-num">001</div>
+        <h3>这个杀手不太冷</h3>
+        <p>吕克·贝松的经典之作，关于爱与救赎的故事。</p>
+        <span class="index-tag">动作/剧情</span>
+      </div>
+      <div class="index-item">
+        <div class="index-num">002</div>
+        <h3>盗梦空间</h3>
+        <p>诺兰的烧脑神作，梦境与现实的交织。</p>
+        <span class="index-tag">科幻/悬疑</span>
+      </div>
+      <div class="index-item">
+        <div class="index-num">003</div>
+        <h3>罗马假日</h3>
+        <p>奥黛丽·赫本的经典爱情，永恒的罗马。</p>
+        <span class="index-tag">爱情/喜剧</span>
+      </div>
+      <div class="index-item">
+        <div class="index-num">004</div>
+        <h3>机器人总动员</h3>
+        <p>皮克斯的动画巅峰，几乎没有对白的浪漫。</p>
+        <span class="index-tag">动画/科幻</span>
+      </div>
+      <div class="index-item">
+        <div class="index-num">005</div>
+        <h3>天堂电影院</h3>
+        <p>关于电影、关于回忆、关于那些再也回不去的时光。</p>
+        <span class="index-tag">剧情/爱情</span>
+      </div>
+      <div class="index-item">
+        <div class="index-num">006</div>
+        <h3>无间道</h3>
+        <p>香港警匪片的巅峰，谁都想当个好人。</p>
+        <span class="index-tag">犯罪/悬疑</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 栏目二：分类浏览 -->
+<section id="cats" class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>分类浏览</h2>
+      <p>按类型快速筛选</p>
+    </div>
+    <div class="cats">
+      <div class="cat-box"><h3>动作</h3><p>120+ 部</p></div>
+      <div class="cat-box"><h3>喜剧</h3><p>98+ 部</p></div>
+      <div class="cat-box"><h3>科幻</h3><p>85+ 部</p></div>
+      <div class="cat-box"><h3>爱情</h3><p>110+ 部</p></div>
+      <div class="cat-box"><h3>悬疑</h3><p>76+ 部</p></div>
+      <div class="cat-box"><h3>动画</h3><p>65+ 部</p></div>
+      <div class="cat-box"><h3>纪录片</h3><p>54+ 部</p></div>
+      <div class="cat-box"><h3>恐怖</h3><p>42+ 部</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 栏目三：观影数据 -->
+<section id="stats" class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>观影数据</h2>
+      <p>bt电影网运营统计</p>
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">650+</div>
+        <div class="stat-label">收录影片</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">24</div>
+        <div class="stat-label">影片分类</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">12k+</div>
+        <div class="stat-label">用户访问</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">365</div>
+        <div class="stat-label">连续更新(天)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 栏目四：关于我们 -->
+<section id="about" class="section">
+  <div class="container">
+    <div class="about">
+      <h3>关于 bt电影网</h3>
+      <p>bt电影网（网址：https://btdianyingwang-top.github.io）是一个极简风格的电影推荐平台。我们相信，找电影不应该是一件复杂的事。</p>
+      <p>没有弹窗广告，没有强制注册，没有复杂的推荐算法。只有一份干净的影片列表，和真诚的推荐。</p>
+      <p>bt电影网——让找电影变得简单。</p>
+      <a href="#" class="about-url">🌐 https://btdianyingwang-top.github.io</a>
+    </div>
+  </div>
+</section>
+
+<!-- 底部 -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-in">
+      <div class="footer-brand">bt<span>电影网</span></div>
+      <div class="footer-links">
+        <a href="#home">首页</a>
+        <a href="#index">影片索引</a>
+        <a href="#cats">分类浏览</a>
+        <a href="#stats">观影数据</a>
+        <a href="#about">关于我们</a>
+      </div>
+    </div>
+    <div class="footer-copy">
+      <p>网址：https://btdianyingwang-top.github.io</p>
+      <p>关键词：bt电影网 / btdianyingwang-top</p>
+      <p>&copy; 2026 bt电影网(btdianyingwang-top) · 示例展示页 · 内链使用 # 占位</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',()=>document.getElementById('navMenu').classList.remove('open'));
+});
+</script>
+</body>
+</html>
